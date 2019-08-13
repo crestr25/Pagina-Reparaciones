@@ -6,12 +6,13 @@ var bodyParser = require("body-parser")
 
 var mongoose = require("mongoose");
 mongoose.set('useNewUrlParser', true);
-mongoose.connect("mongodb://localhost/reparaciones")
+mongoose.connect("mongodb://localhost:27017/reparaciones")
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.set("view engine", "ejs");
 
 var reparacionesSchema = new mongoose.Schema({
+    number: Number,
     fecha: String,
     empresa: String,
     correo: String,
@@ -33,22 +34,46 @@ app.get("/", function(req, res){
 // "/NUEVA" GET, POST
 app.get("/nueva", function(req, res){
     res.render("nueva");
-})
+});
 
 app.post("/nueva", function(req, res){
+    var r1 = new Reparacion({
+        number: 3,
+        fecha: req.body.fecha,
+        empresa: req.body.empresa,
+        email: req.body.email,
+        telefono: req.body.telefono.toString(),
+        marca: req.body.marca,
+        descripcion: req.body.descripcion,
+        referencia: req.body.referencia
+    })
+    
+    r1.save(function(err){
+        if(err) console.log(err)
+
+        console.log("Saved")
+    })
+    
     res.render("nueva")
-    console.log(req.body.fecha)
-    console.log(req.body.empresa)
-    console.log(req.body.correo)
-    console.log(req.body.telefono.toString())
-    console.log(req.body.marca)
-    console.log(req.body.descripcion)
-    console.log(req.body.referencia)
+    
 })
 
-// "/CONSULTAR" GET, POST
-app.get("/consulta", function(req, res){
-    res.render("consulta");
+app.get("/reparaciones", function(req, res){
+    Reparacion.find({}, function(err, reparaciones){
+        if(err) console.log(err)
+
+        res.render("index", {reparaciones: reparaciones})
+    })
+})
+
+app.get("/reparaciones/:id", function(req, res){
+    
+    Reparacion.findById(req.params.id, function(err, reparacion){
+        if(err) console.log(err);
+
+        console.log(reparacion)
+        res.render("show", {reparacion: reparacion})
+    })
 })
 
 
