@@ -1,0 +1,85 @@
+<% include partials/header %>
+
+<div style="width: 30%; margin: 0 auto;">
+
+    
+    <ul class="nav nav-pills nav-justified" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="Datos" aria-selected="true">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="Repuestos" aria-selected="false">Profile</a>
+        </li>
+    </ul>
+    
+        
+    <form action="/reparaciones/<%= reparacion.id %>?_method=PUT" method="POST">
+    <div class="tab-content">
+            <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label>Fecha</label>
+                      <input type="date" class="form-control" name="rep[fecha]" value="<%= reparacion.fecha %>">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Empresa</label>
+                      <input type="text" class="form-control" name="rep[empresa]" value="<%= reparacion.empresa %>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Correo</label>
+                        <input type="email" class="form-control" name="rep[email]" value="<%= reparacion.correo %>">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Telefono</label>
+                        <input type="number" class="form-control" name="rep[telefono]" value="<%= reparacion.telefono %>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Marca</label>
+                        <select name="rep[marca]" class="form-control">
+                            <option selected value="<%= reparacion.marca %>"><%= reparacion.marca %></option>
+                            <option value="goulds">Goulds</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Referencia</label>
+                        <input type="text" class="form-control" name="rep[referencia]" value="<%= reparacion.referencia %>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <textarea class="form-control" name="rep[descripcion]" value="<%= reparacion.descripcion %>"><%= reparacion.descripcion %></textarea>
+                </div>              
+                
+            </div>
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>repuesto</label>
+                        <input type="text" class="form-control" name="repuesto" placeholder="repuesto">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>repuesto2</label>
+                        <input type="text" class="form-control" name="repuesto2" placeholder="repuesto">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button class="btn btn-lg btn-default btn-block btn-dark">Actualizar</button>
+            </div>
+        </div>
+    </form>
+</div>
+      
+      <script>
+        $(function () {
+          $('#myTab li:first-child a').tab('show')
+        })
+      </script>
+
+
+<% include partials/footer %>

@@ -4,11 +4,15 @@ var port = 3000
 
 var bodyParser = require("body-parser")
 
+var methodOverride = require("method-override")
+
 var mongoose = require("mongoose");
 mongoose.set('useNewUrlParser', true);
-mongoose.connect("mongodb://localhost:27017/reparaciones")
+mongoose.connect("mongodb://localhost:27017/reparaciones",{ useFindAndModify: false })
+
 
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(methodOverride("_method"))
 app.set("view engine", "ejs");
 
 var reparacionesSchema = new mongoose.Schema({
@@ -71,11 +75,29 @@ app.get("/reparaciones/:id", function(req, res){
     Reparacion.findById(req.params.id, function(err, reparacion){
         if(err) console.log(err);
 
-        console.log(reparacion)
         res.render("show", {reparacion: reparacion})
     })
 })
 
+app.get("/reparaciones/:id/editar", function(req, res){
+
+    Reparacion.findById(req.params.id, function(err, reparacion){
+        if(err) console.log(err);
+
+        res.render("edit", {reparacion: reparacion})
+    })
+})
+
+
+app.put("/reparaciones/:id", function(req, res){
+    console.log(req.body.rep)
+    Reparacion.findByIdAndUpdate(req.params.id, {empresa: req.body.rep.empresa}, function(err,rep){
+        console.log(rep)
+        if(err) console.log(err)
+
+        res.redirect("/reparaciones")
+    })
+})
 
 // PORT LISTENING
 app.listen(port, function(){
