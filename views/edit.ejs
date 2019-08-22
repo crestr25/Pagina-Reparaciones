@@ -1,7 +1,6 @@
 <% include partials/header %>
 
-<div style="width: 30%; margin: 0 auto;">
-
+<div style="width: 50%; margin: 0 auto;">
     
     <ul class="nav nav-pills nav-justified" id="myTab" role="tablist">
         <li class="nav-item">
@@ -19,53 +18,59 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                       <label>Fecha</label>
-                      <input type="date" class="form-control" name="rep[fecha]" value="<%= reparacion.fecha %>">
+                      <input type="date" class="form-control" name="rep[fecha]" value="<%= JSON.parse(reparacion).fecha %>">
                     </div>
                     <div class="form-group col-md-6">
                       <label>Empresa</label>
-                      <input type="text" class="form-control" name="rep[empresa]" value="<%= reparacion.empresa %>">
+                      <input type="text" class="form-control" name="rep[empresa]" value="<%= JSON.parse(reparacion).empresa %>">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label>Correo</label>
-                        <input type="email" class="form-control" name="rep[email]" value="<%= reparacion.correo %>">
+                        <input type="email" class="form-control" name="rep[email]" value="<%= JSON.parse(reparacion).correo %>">
                     </div>
                     <div class="form-group col-md-6">
                         <label>Telefono</label>
-                        <input type="number" class="form-control" name="rep[telefono]" value="<%= reparacion.telefono %>">
+                        <input type="number" class="form-control" name="rep[telefono]" value="<%= JSON.parse(reparacion).telefono %>">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label>Marca</label>
                         <select name="rep[marca]" class="form-control">
-                            <option selected value="<%= reparacion.marca %>"><%= reparacion.marca %></option>
+                            <option selected value="<%= reparacion.marca %>"><%= JSON.parse(reparacion).marca %></option>
                             <option value="goulds">Goulds</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Referencia</label>
-                        <input type="text" class="form-control" name="rep[referencia]" value="<%= reparacion.referencia %>">
+                        <input type="text" class="form-control" name="rep[referencia]" value="<%- JSON.parse(reparacion).referencia %>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Descripcion</label>
-                    <textarea class="form-control" name="rep[descripcion]" value="<%= reparacion.descripcion %>"><%= reparacion.descripcion %></textarea>
+                    <textarea class="form-control" name="rep[descripcion]"><%= JSON.parse(reparacion).descripcion %></textarea>
                 </div>              
                 
             </div>
             <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>repuesto</label>
-                        <input type="text" class="form-control" name="repuesto" placeholder="repuesto">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>repuesto2</label>
-                        <input type="text" class="form-control" name="repuesto2" placeholder="repuesto">
-                    </div>
-                </div>
+                    <div id="newlink">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <input type="text" id = "00" class="form-control" name="item[0][0]" placeholder="repuesto">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" id = "01" class="form-control" name="item[0][1]" placeholder="cantidad">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" id = "02" class="form-control" name="item[0][2]" placeholder="precio">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <a class = "btn btn-default btn-block btn-dark" href="javascript:new_link()">Nuevo</a>
+                                </div>
+                            </div>
+                        </div>
             </div>
             
             <div class="form-group">
@@ -74,12 +79,103 @@
         </div>
     </form>
 </div>
-      
-      <script>
+     
+
+
+    <script>
+        
+        var test = JSON.parse('<%- reparacion %>').item
+        document.addEventListener('DOMContentLoaded', function() {
+            iden = 0
+            console.log("out")
+            console.log(test.length)
+            for(var j = 0; j < test.length; j++) {
+                console.log("in")
+                var arr = test[j]
+                console.log(arr)
+                for(var i = 0; i < arr.length; i++){
+                    console.log(iden.toString() + i.toString())
+                    var el = document.getElementById(iden.toString() + i.toString());
+                    el.setAttribute("value", arr[i])
+                }
+                if(test[j+1]){
+                    new_link()
+                }
+                iden++
+            };
+            
+        }, false)
         $(function () {
-          $('#myTab li:first-child a').tab('show')
+            $('#myTab li:first-child a').tab('show')
         })
-      </script>
+
+        /*
+        This script is identical to the above JavaScript function.
+        */
+        var ct = 1;
+        var c = 1;
+        function new_link()
+        {
+            ct++;
+            var div1 = document.createElement('div');
+            div1.className = "form-row"
+            div1.id = ct;
+            //Creo el div de nombre
+            var divNombre = document.createElement('div');
+            divNombre.className = "form-group col-md-6"
+            inputNombre = document.createElement("INPUT");
+            inputNombre.setAttribute("type", "text")
+            inputNombre.setAttribute("name", "item["+ct+"][0]")
+            inputNombre.setAttribute("class", "form-control")
+            inputNombre.setAttribute("id", c.toString()+"0")
+            divNombre.appendChild(inputNombre)
+            
+            //Creo el div de cantidad
+            var divCant = document.createElement('div');
+            divCant.className = "form-group col-md-2"
+            var inputCant = document.createElement("INPUT");
+            inputCant.setAttribute("type", "text")
+            inputCant.setAttribute("name", "item["+ct+"][1]")
+            inputCant.setAttribute("class", "form-control")
+            inputCant.setAttribute("id", c.toString()+"1")
+            divCant.appendChild(inputCant)
+            //Creo el div de precio
+            var divPrec = document.createElement('div');
+            divPrec.className = "form-group col-md-2"
+            var inputPrec = document.createElement("INPUT");
+            inputPrec.setAttribute("type", "text")
+            inputPrec.setAttribute("name", "item["+ct+"][2]")
+            inputPrec.setAttribute("class", "form-control")
+            inputPrec.setAttribute("id", c.toString()+"2")
+            divPrec.appendChild(inputPrec)
+            //Creo el div del link para eliminar
+            var divLink = document.createElement('div');
+            divLink.className = "form-group col-md-2"
+            newlink = document.createElement('a');
+            newlink.setAttribute("href", "javascript:delIt("+ ct +")")
+            newlink.setAttribute("class","btn btn-default btn-block btn-dark")
+            newlink.innerHTML = "Eliminar"
+            divLink.appendChild(newlink)
+            //Creo el div ppal
+            div1.appendChild(divNombre)
+            div1.appendChild(divCant)
+            div1.appendChild(divPrec)
+            div1.appendChild(divLink)
+
+            
+         
+            // link to delete extended form elements
+            document.getElementById('newlink').appendChild(div1);
+        }
+        // function to delete the newly added set of elements
+        function delIt(eleId)
+        {
+            d = document;
+            var ele = d.getElementById(eleId);
+            var parentEle = d.getElementById('newlink');
+            parentEle.removeChild(ele);
+        }
+    </script>
 
 
 <% include partials/footer %>

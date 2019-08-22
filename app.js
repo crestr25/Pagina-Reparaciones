@@ -23,7 +23,8 @@ var reparacionesSchema = new mongoose.Schema({
     telefono: String,
     marca: String,
     referencia: String,
-    descripcion: String
+    descripcion: String,
+    item: [[{type: String}]]
 })
 
 var Reparacion = mongoose.model("Reparacion", reparacionesSchema)
@@ -64,8 +65,9 @@ app.post("/nueva", function(req, res){
 
 app.get("/reparaciones", function(req, res){
     Reparacion.find({}, function(err, reparaciones){
-        if(err) console.log(err)
-
+        if(err){
+            console.log(err)
+        }
         res.render("index", {reparaciones: reparaciones})
     })
 })
@@ -80,26 +82,38 @@ app.get("/reparaciones/:id", function(req, res){
 })
 
 app.get("/reparaciones/:id/editar", function(req, res){
-
     Reparacion.findById(req.params.id, function(err, reparacion){
         if(err) console.log(err);
-
-        res.render("edit", {reparacion: reparacion})
+        res.render("edit", {reparacion: JSON.stringify(reparacion) })
+        // res.render("edit", {reparacion: reparacion})
     })
 })
 
 
 app.put("/reparaciones/:id", function(req, res){
-    console.log(req.body.rep)
-    Reparacion.findByIdAndUpdate(req.params.id, {empresa: req.body.rep.empresa}, function(err,rep){
+    console.log(req.body.item)
+    Reparacion.findByIdAndUpdate(req.params.id, req.body, function(err,rep){
+        if(err){
+            console.log(err)
+        } 
+            
         console.log(rep)
-        if(err) console.log(err)
-
         res.redirect("/reparaciones")
     })
+})
+
+app.get("/ensayo", function(req, res){
+    res.render("ensayo.ejs")
+})
+
+app.post("/ensayo", function(req, res){
+    console.log(req.body.item)
+    res.render("ensayo")
 })
 
 // PORT LISTENING
 app.listen(port, function(){
     console.log("Magic Happens on port " + port)
 })
+
+
