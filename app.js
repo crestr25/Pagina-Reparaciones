@@ -91,13 +91,13 @@ app.get("/reparaciones/:id/editar", function(req, res){
 
 
 app.put("/reparaciones/:id", function(req, res){
-    console.log(req.body.item)
-    Reparacion.findByIdAndUpdate(req.params.id, req.body, function(err,rep){
+    // console.log(req.body)
+    // console.log("===================")
+    Reparacion.findByIdAndUpdate(req.params.id, req.body.rep , function(err,rep){
         if(err){
             console.log(err)
-        } 
-            
-        console.log(rep)
+        }    
+        // console.log(rep)
         res.redirect("/reparaciones")
     })
 })

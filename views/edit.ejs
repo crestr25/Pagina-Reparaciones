@@ -12,7 +12,8 @@
     </ul>
     
         
-    <form action="/reparaciones/<%= reparacion.id %>?_method=PUT" method="POST">
+    <form action="/reparaciones/<%= JSON.parse(reparacion)._id %>?_method=PUT" method="POST">
+        
     <div class="tab-content">
             <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="form-row">
@@ -58,13 +59,13 @@
                     <div id="newlink">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <input type="text" id = "00" class="form-control" name="item[0][0]" placeholder="repuesto">
+                                    <input type="text" id = "00" class="form-control" name="rep[item][0][0]" placeholder="repuesto">
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <input type="text" id = "01" class="form-control" name="item[0][1]" placeholder="cantidad">
+                                    <input type="text" id = "01" class="form-control" name="rep[item][0][1]" placeholder="cantidad">
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <input type="text" id = "02" class="form-control" name="item[0][2]" placeholder="precio">
+                                    <input type="text" id = "02" class="form-control" name="rep[item][0][2]" placeholder="precio">
                                 </div>
                                 <div class="form-group col-md-2">
                                     <a class = "btn btn-default btn-block btn-dark" href="javascript:new_link()">Nuevo</a>
@@ -87,7 +88,6 @@
         var test = JSON.parse('<%- reparacion %>').item
         document.addEventListener('DOMContentLoaded', function() {
             iden = 0
-            console.log("out")
             console.log(test.length)
             for(var j = 0; j < test.length; j++) {
                 console.log("in")
@@ -116,7 +116,7 @@
         var c = 1;
         function new_link()
         {
-            ct++;
+            
             var div1 = document.createElement('div');
             div1.className = "form-row"
             div1.id = ct;
@@ -125,7 +125,7 @@
             divNombre.className = "form-group col-md-6"
             inputNombre = document.createElement("INPUT");
             inputNombre.setAttribute("type", "text")
-            inputNombre.setAttribute("name", "item["+ct+"][0]")
+            inputNombre.setAttribute("name", "rep[item]["+ct+"][0]")
             inputNombre.setAttribute("class", "form-control")
             inputNombre.setAttribute("id", c.toString()+"0")
             divNombre.appendChild(inputNombre)
@@ -135,7 +135,7 @@
             divCant.className = "form-group col-md-2"
             var inputCant = document.createElement("INPUT");
             inputCant.setAttribute("type", "text")
-            inputCant.setAttribute("name", "item["+ct+"][1]")
+            inputCant.setAttribute("name", "rep[item]["+ct+"][1]")
             inputCant.setAttribute("class", "form-control")
             inputCant.setAttribute("id", c.toString()+"1")
             divCant.appendChild(inputCant)
@@ -144,7 +144,7 @@
             divPrec.className = "form-group col-md-2"
             var inputPrec = document.createElement("INPUT");
             inputPrec.setAttribute("type", "text")
-            inputPrec.setAttribute("name", "item["+ct+"][2]")
+            inputPrec.setAttribute("name", "rep[item]["+ct+"][2]")
             inputPrec.setAttribute("class", "form-control")
             inputPrec.setAttribute("id", c.toString()+"2")
             divPrec.appendChild(inputPrec)
@@ -166,6 +166,8 @@
          
             // link to delete extended form elements
             document.getElementById('newlink').appendChild(div1);
+            ct++;
+            c++;
         }
         // function to delete the newly added set of elements
         function delIt(eleId)
