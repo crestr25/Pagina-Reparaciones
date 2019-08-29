@@ -12,18 +12,18 @@
                             </div>
     
                             <div class="col-md-6 text-right">
-                                <p class="font-weight-bold mb-1">Reparacion #xxxxx</p>
+                                <p class="font-weight-bold mb-1">Reparacion #<%= reparacion.number %></p>
                                 <p class="text-muted">Fecha: <%= reparacion.fecha %></p>
                             </div>
                         </div>
     
                         <hr class="my-5">
     
-                        <div class="row pb-5 p-5">
+                        <div class="row pb-5 p-5" >
                             <div class="col-md-6">
                                 <p class="font-weight-bold mb-4">Informacion del Cliente</p>
                                 <p class="mb-1"><span class="text-muted">Empresa: </span><%= reparacion.empresa %></p>
-                                <p class="mb-1"><span class="text-muted">Correo: </span><%= reparacion.email %></p>
+                                <p class="mb-1"><span class="text-muted">Correo: </span><%= reparacion.correo %></p>
                                 <p class="mb-1"><span class="text-muted">Telefono: </span><%= reparacion.telefono %></p>
                             </div>
     
@@ -39,7 +39,7 @@
                             <div class="col-md-12">
                                 <table class="table">
                                     <thead>
-                                        <tr>
+                                        <tr align="center">
                                             <th class="border-0 text-uppercase small font-weight-bold">Nombre</th>
                                             <th class="border-0 text-uppercase small font-weight-bold">Cantidad</th>
                                             <th class="border-0 text-uppercase small font-weight-bold">Precio</th>
@@ -47,10 +47,15 @@
                                     </thead>
                                     <tbody>
                                         <% reparacion.item.forEach(function(arr){ %>
-                                        <tr>
-                                            <% arr.forEach(function(item){%>
-                                                <td><%= item %></td>
-                                            <% }) %>    
+                                        <tr align="center">
+                                            <% for(var i = 0, num = 0; i < arr.length; i++){%>
+
+                                            <%  if(i === 2){ %>
+                                                    <td><%= parseInt(arr[i]).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
+                                        <%      }else{ %>
+                                                    <td><%= arr[i] %></td>
+                                        <%      } %>
+                                        <%  } %>  
                                         </tr>
                                         <% }) %>
                                     </tbody>
@@ -59,23 +64,65 @@
                         </div>
     
                         <div class="d-flex flex-row-reverse bg-dark text-white p-4">
-
-                            <div class="py-3 px-5 text-left">
-                                <a class="btn" href="/reparaciones/<%= reparacion.id %>/editar">Editar</a>
+                            <div class="row">
+                                <div class="py-3 px-5 text-right">
+                                    <div class="mb-2">Total</div>
+                                    <div class="h2 font-weight-light"><% for(var i = 0, tot = 0, n = 0; i < reparacion.item.length; i++){ %>
+                                        <%    n = parseInt(reparacion.item[i][2]) %> 
+                                        <%    tot = tot + n %>
+                                        <% } %>
+                                        <%= tot.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
+                                    </div>
+                                </div>
+                                <div class="float-left">
+                                    <div class="column float-left">
+                                        <form action="reparaciones/aprovada" method="POST" >
+                                            <button class="btn btn-lg btn-default btn-block">Aprobada</button>
+                                        </form>
+                                        <form action="/historial" method="POST">
+                                            <button class="btn btn-lg btn-default btn-block">Terminada</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
                             </div>
                             
-                            <div class="py-3 px-5 text-right">
-                                <div class="mb-2">Sub - Total amount</div>
-                                <div class="h2 font-weight-light">$32,432</div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="row p-5">
+                <div class="text-light mt-5 mb-5 text-center small">
+                    <a class="btn" href="/reparaciones/<%= reparacion.id %>/editar">Editar</a>
+                </div>
+                <div class="text-light mt-5 mb-5 text-center small">
+                    <a class="btn" href="/reparaciones">Regresar</a>
+                </div>
+
+                <div class="text-light mt-5 mb-5 text-center small">
+                    <a class="btn" href="/reparaciones">Aprobada</a>
+                </div>
+
+                <div class="text-light mt-5 mb-5 text-center small">
+                    <a class="btn" href="/reparaciones">Listo</a>
+                </div>
+            </div>
+            
+        </div>
         
-        <div class="text-light mt-5 mb-5 text-center small">by : <a class="text-light" target="_blank" href="http://totoprayogo.com">totoprayogo.com</a></div>
+        
+
+        
+       
         
     </div>
+
+   
+
+
+
 
 <% include partials/footer %>

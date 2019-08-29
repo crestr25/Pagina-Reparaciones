@@ -9,19 +9,22 @@
             <th scope="col">Fecha</th>
             <th scope="col">Empresa</th>
             <th scope="col">Bomba</th>
+            <th scope="col">Estado</th>
         </tr>
         </thead>
         <tbody>
         <% reparaciones.forEach(function(element){ %>
             <tr>
-                <th><a href="/reparaciones/<%= element.id %>"><%= element.number %></a></th>
+                <td><a href="/reparaciones/<%= element.id %>"><%= element.number %></a></th>
                 <td><%= element.fecha %></td>
                 <td><%= element.empresa %></td>
                 <td><%= element.marca + " " + element.referencia %></td>
+                <td><%= element.estado %></td>
             </tr>
 
         <% }) %>
         </tbody>
     </table>
+    <a href="/historial">Archivados</a>
 </div>
 <% include partials/footer %>

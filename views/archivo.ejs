@@ -1,0 +1,31 @@
+<% include partials/header %>
+
+<div style="width: 50%; margin: 0 auto;">
+    <h1>Reparaciones Pendientes</h1>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Orden</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Empresa</th>
+            <th scope="col">Bomba</th>
+            <th scope="col">Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% reparaciones.forEach(function(element){ %>
+            <tr>
+                <td><a href="/reparaciones/<%= element.id %>"><%= element.number %></a></th>
+                <td><%= element.fecha %></td>
+                <td><%= element.empresa %></td>
+                <td><%= element.marca + " " + element.referencia %></td>
+                <td><%= element.estado %></td>
+            </tr>
+
+        <% }) %>
+        </tbody>
+    </table>
+    <a href="/reparaciones">Volver</a>
+</div>
+
+<% include partials/footer %>

@@ -1,3 +1,14 @@
+function Serial(num, len){
+    var r = "" + num;
+    while(r.length < len){
+        r = "0" + r;
+    }
+    return "AB" + r
+  
+}
+
+
+
 var express = require("express");
 var app = express()
 var port = 3000
@@ -15,52 +26,53 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(methodOverride("_method"))
 app.set("view engine", "ejs");
 
-var reparacionesSchema = new mongoose.Schema({
-    number: Number,
-    fecha: String,
-    empresa: String,
-    correo: String,
-    telefono: String,
-    marca: String,
-    referencia: String,
-    descripcion: String,
-    item: [[{type: String}]]
-})
+var Reparacion = require("./models/reparacion")
+var Counter = require("./models/counter")
+// var c = new Counter({})
+// c.save()
 
-var Reparacion = mongoose.model("Reparacion", reparacionesSchema)
-
-// ROUTES
-
-// "/"
 app.get("/", function(req, res){
     res.render("landing")
 });
 
-// "/NUEVA" GET, POST
 app.get("/nueva", function(req, res){
     res.render("nueva");
 });
 
 app.post("/nueva", function(req, res){
-    var r1 = new Reparacion({
-        number: 3,
-        fecha: req.body.fecha,
-        empresa: req.body.empresa,
-        email: req.body.email,
-        telefono: req.body.telefono.toString(),
-        marca: req.body.marca,
-        descripcion: req.body.descripcion,
-        referencia: req.body.referencia
-    })
     
-    r1.save(function(err){
+    Counter.find({name: "counter"}, function(err, c){
         if(err) console.log(err)
 
-        console.log("Saved")
-    })
+        var serial = Serial(c[0].counter, 4)
+
+        var r1 = new Reparacion({
+            number: serial,
+            fecha: req.body.fecha,
+            empresa: req.body.empresa,
+            email: req.body.email,
+            telefono: req.body.telefono.toString(),
+            marca: req.body.marca,
+            descripcion: req.body.descripcion,
+            referencia: req.body.referencia
+        })
+
+        r1.save(function(err){
+            if(err) console.log(err)
+            
+            Counter.findOneAndUpdate({name:c[0].name}, { $inc: { "counter" : 1 }},function(err,it){
+                if(err) console.log(err)
+    
+                console.log(it)
+            })
+
+            console.log("Saved")
+        })
     
     res.render("nueva")
     
+    })
+
 })
 
 app.get("/reparaciones", function(req, res){
@@ -93,7 +105,16 @@ app.get("/reparaciones/:id/editar", function(req, res){
 app.put("/reparaciones/:id", function(req, res){
     // console.log(req.body)
     // console.log("===================")
-    Reparacion.findByIdAndUpdate(req.params.id, req.body.rep , function(err,rep){
+    var rep = {
+        empresa: req.body.rep.empresa.toLowerCase(),
+        email: req.body.rep.correo.toLowerCase(), 
+        telefono: req.body.rep.telefono.toString().toLowerCase(),
+        marca: req.body.rep.marca.toLowerCase(),
+        descripcion: req.body.rep.descripcion.toLowerCase(),
+        referencia: req.body.rep.referencia.toLowerCase(),
+        item : req.body.rep.item.map(function(x){return x.map(function(x){return x.toLowerCase()}) })
+    }
+    Reparacion.findByIdAndUpdate(req.params.id, rep , function(err,rep){
         if(err){
             console.log(err)
         }    
@@ -111,9 +132,22 @@ app.post("/ensayo", function(req, res){
     res.render("ensayo")
 })
 
+app.get("reparaciones/historial", function(req, res){
+    Reparacion.find({}, function(err, reparaciones){
+        if(err){
+            console.log(err)
+        }
+        res.render("archivo", {reparaciones: reparaciones})
+    })
+})
+
+app.post("reparaciones/historial", function(req, res){
+    res.send("oelo")
+})
+
+
 // PORT LISTENING
 app.listen(port, function(){
     console.log("Magic Happens on port " + port)
 })
-
 
