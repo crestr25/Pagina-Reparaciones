@@ -1,10 +1,10 @@
 <% include partials/header %>
 
-<div style="width: 50%; margin: 0 auto;">
-    <h1>Reparaciones Pendientes</h1>
+<div style="width: 60%; margin: 0 auto;">
+    <h1 align="center">Reparaciones Pendientes</h1>
     <table class="table">
         <thead class="thead-dark">
-        <tr>
+        <tr align="center">
             <th scope="col">Orden</th>
             <th scope="col">Fecha</th>
             <th scope="col">Empresa</th>
@@ -14,7 +14,7 @@
         </thead>
         <tbody>
         <% reparaciones.forEach(function(element){ %>
-            <tr>
+            <tr >
                 <td><a href="/reparaciones/<%= element.id %>"><%= element.number %></a></th>
                 <td><%= element.fecha %></td>
                 <td><%= element.empresa %></td>
@@ -25,6 +25,6 @@
         <% }) %>
         </tbody>
     </table>
-    <a href="/historial">Archivados</a>
+    <a href="/reparaciones/historial">Archivados</a>
 </div>
 <% include partials/footer %>

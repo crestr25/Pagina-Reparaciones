@@ -50,7 +50,7 @@ app.post("/nueva", function(req, res){
             number: serial,
             fecha: req.body.fecha,
             empresa: req.body.empresa,
-            email: req.body.email,
+            correo: req.body.email,
             telefono: req.body.telefono.toString(),
             marca: req.body.marca,
             descripcion: req.body.descripcion,
@@ -76,11 +76,20 @@ app.post("/nueva", function(req, res){
 })
 
 app.get("/reparaciones", function(req, res){
-    Reparacion.find({}, function(err, reparaciones){
+    Reparacion.find({estado:{$ne: "Archivado"}},function(err, reparaciones){
         if(err){
             console.log(err)
         }
         res.render("index", {reparaciones: reparaciones})
+    })
+})
+
+app.get("/reparaciones/historial", function(req, res){
+    Reparacion.find({estado:"Archivado"}, function(err, reparaciones){
+        if(err){
+            console.log(err)
+        }
+        res.render("archivo", {reparaciones: reparaciones})
     })
 })
 
@@ -89,7 +98,7 @@ app.get("/reparaciones/:id", function(req, res){
     Reparacion.findById(req.params.id, function(err, reparacion){
         if(err) console.log(err);
 
-        res.render("show", {reparacion: reparacion})
+        res.render("ensayo", {reparacion: JSON.stringify(reparacion)})
     })
 })
 
@@ -105,8 +114,10 @@ app.get("/reparaciones/:id/editar", function(req, res){
 app.put("/reparaciones/:id", function(req, res){
     // console.log(req.body)
     // console.log("===================")
+
     var rep = {
         empresa: req.body.rep.empresa.toLowerCase(),
+        fecha: req.body.rep.fecha,
         email: req.body.rep.correo.toLowerCase(), 
         telefono: req.body.rep.telefono.toString().toLowerCase(),
         marca: req.body.rep.marca.toLowerCase(),
@@ -118,32 +129,34 @@ app.put("/reparaciones/:id", function(req, res){
         if(err){
             console.log(err)
         }    
-        // console.log(rep)
         res.redirect("/reparaciones")
     })
 })
 
-app.get("/ensayo", function(req, res){
-    res.render("ensayo.ejs")
-})
-
-app.post("/ensayo", function(req, res){
-    console.log(req.body.item)
-    res.render("ensayo")
-})
-
-app.get("reparaciones/historial", function(req, res){
-    Reparacion.find({}, function(err, reparaciones){
+app.post("/reparaciones/:id/historial", function(req, res){
+    console.log(req.params.id)
+    Reparacion.findByIdAndUpdate(req.params.id, {estado : "Esperando Aprobacion"} , function(err,rep){
         if(err){
             console.log(err)
-        }
-        res.render("archivo", {reparaciones: reparaciones})
+        }    
+        res.redirect("/reparaciones")
     })
 })
 
-app.post("reparaciones/historial", function(req, res){
-    res.send("oelo")
+app.post("/reparaciones/:id/terminar", function(req, res){
+    console.log(req.params.id)
+    Reparacion.findByIdAndUpdate(req.params.id, {estado : "Archivado"} , function(err,rep){
+        if(err){
+            console.log(err)
+        }    
+        res.redirect("/reparaciones")
+    })
 })
+
+
+
+
+
 
 
 // PORT LISTENING
