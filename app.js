@@ -98,7 +98,7 @@ app.get("/reparaciones/:id", function(req, res){
     Reparacion.findById(req.params.id, function(err, reparacion){
         if(err) console.log(err);
 
-        res.render("ensayo", {reparacion: JSON.stringify(reparacion)})
+        res.render("show", {reparacion: JSON.stringify(reparacion)})
     })
 })
 

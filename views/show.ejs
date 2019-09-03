@@ -1,128 +1,175 @@
 <% include partials/header %>
-
 <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body p-0">
-                        <div class="row p-5">
-                            <div class="col-md-6">
-                                <!-- <img src="https://drive.google.com/open?id=1GschTB0020-rpAJagm0p__P5zuAM0VFM"> -->
-                                <h1>ALMACEN BOMBAS S.A</h1>
-                            </div>
-    
-                            <div class="col-md-6 text-right">
-                                <p class="font-weight-bold mb-1">Reparacion #<%= reparacion.number %></p>
-                                <p class="text-muted">Fecha: <%= reparacion.fecha %></p>
-                            </div>
-                        </div>
-    
-                        <hr class="my-5">
-    
-                        <div class="row pb-5 p-5" >
-                            <div class="col-md-6">
-                                <p class="font-weight-bold mb-4">Informacion del Cliente</p>
-                                <p class="mb-1"><span class="text-muted">Empresa: </span><%= reparacion.empresa %></p>
-                                <p class="mb-1"><span class="text-muted">Correo: </span><%= reparacion.correo %></p>
-                                <p class="mb-1"><span class="text-muted">Telefono: </span><%= reparacion.telefono %></p>
-                            </div>
-    
-                            <div class="col-md-6">
-                                <p class="font-weight-bold mb-4">Datos del Equipo</p>
-                                <p class="mb-1"><span class="text-muted">Marca: </span> <%= reparacion.marca %></p>
-                                <p class="mb-1"><span class="text-muted">Referencia: </span> <%= reparacion.referencia %></p>
-                                <p class="mb-1"><span class="text-muted">Descripcion: </span> <%= reparacion.descripcion %></p>
-                            </div>
-                        </div>
-    
-                        <div class="row p-5">
-                            <div class="col-md-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr align="center">
-                                            <th class="border-0 text-uppercase small font-weight-bold">Nombre</th>
-                                            <th class="border-0 text-uppercase small font-weight-bold">Cantidad</th>
-                                            <th class="border-0 text-uppercase small font-weight-bold">Precio</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% reparacion.item.forEach(function(arr){ %>
-                                        <tr align="center">
-                                            <% for(var i = 0, num = 0; i < arr.length; i++){%>
+    <div class="row">
+        <div class="col">
+            <div class="btn-group-vertical">
 
-                                            <%  if(i === 2){ %>
-                                                    <td><%= parseInt(arr[i]).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
-                                        <%      }else{ %>
-                                                    <td><%= arr[i] %></td>
-                                        <%      } %>
-                                        <%  } %>  
-                                        </tr>
-                                        <% }) %>
-                                    </tbody>
-                                </table>
+                <a id="archivo1" class="btn btn-dark" href="/reparaciones/<%= JSON.parse(reparacion)._id %>/editar"><i
+                        class="far fa-edit"></i></a>
+
+                <form id="archivo2" action="/reparaciones/<%= JSON.parse(reparacion)._id %>/historial" method="POST">
+                    <button class="btn btn-dark"><i class="far fa-save"></i></button>
+                </form>
+
+                <form id="archivo3" action="/reparaciones/<%= JSON.parse(reparacion)._id %>/terminar" method="POST">
+                    <button class="btn btn-dark" onclick="print()"><i class="far fa-file-pdf"></i></button>
+                </form>
+
+                <a class="btn btn-dark" href="/reparaciones"><i class="fas fa-undo-alt"></i></a>
+
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="card">
+                <div class="card-header">
+                    <h3>ALMACEN BOMBAS S.A</h3>
+                    Reparacion
+                    <strong><%= JSON.parse(reparacion).number %></strong>
+                    <span class="float-right"> <strong>Estado:</strong> <%= JSON.parse(reparacion).estado %></span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-sm-6">
+                            <h6 class="mb-3"><strong>Cliente:</strong></h6>
+                            <div>
+                                <strong>Fecha: </strong>
+                                <%= JSON.parse(reparacion).fecha %>
+                            </div>
+                            <div>
+                                <strong>Nombre: </strong>
+                                <%= JSON.parse(reparacion).empresa %>
+                            </div>
+                            <div>
+                                <strong>Correo: </strong>
+                                <%= JSON.parse(reparacion).correo %>
+                            </div>
+                            <div>
+                                <strong>Telefono: </strong>
+                                <%= JSON.parse(reparacion).telefono %>
                             </div>
                         </div>
-    
-                        <div class="d-flex flex-row-reverse bg-dark text-white p-4">
-                            <div class="row">
-                                <div class="py-3 px-5 text-right">
-                                    <div class="mb-2">Total</div>
-                                    <div class="h2 font-weight-light"><% for(var i = 0, tot = 0, n = 0; i < reparacion.item.length; i++){ %>
-                                        <%    n = parseInt(reparacion.item[i][2]) %> 
-                                        <%    tot = tot + n %>
-                                        <% } %>
-                                        <%= tot.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
-                                    </div>
-                                </div>
-                                <div class="float-left">
-                                    <div class="column float-left">
-                                        <form action="reparaciones/aprovada" method="POST" >
-                                            <button class="btn btn-lg btn-default btn-block">Aprobada</button>
-                                        </form>
-                                        <form action="/historial" method="POST">
-                                            <button class="btn btn-lg btn-default btn-block">Terminada</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                
+
+                        <div class="col-sm-6">
+                            <h6 class="mb-3"><strong>Equipo:</strong></h6>
+                            <div>
+                                <strong>Marca: </strong>
+                                <%= JSON.parse(reparacion).marca %>
                             </div>
-                            
+                            <div>
+                                <strong>Referencia: </strong>
+                                <%= JSON.parse(reparacion).referencia %>
+                            </div>
+                            <div>
+                                <strong>Descripcion: </strong>
+                                <%= JSON.parse(reparacion).descripcion %>
+                            </div>
                         </div>
+
+
+
+                    </div>
+
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr align="center">
+                                    <th class="center">#</th>
+                                    <th>Item</th>
+
+
+                                    <th class="right">Valor</th>
+                                    <th class="center">Cantidad</th>
+                                    <th class="right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% var j = 1, sum = 0%>
+                                <% JSON.parse(reparacion).item.forEach(function(arr){ %>
+                                <tr align="center">
+                                    <td><%= j %></td>
+                                    <% for(var i = 0, num = 0; i < arr.length; i++){%>
+
+                                    <%  if(i === 2){ %>
+                                    <td><%= parseInt(arr[2]).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
+                                    <td>$
+                                        <%= (parseInt(arr[1]) * parseInt(arr[i])).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
+                                        <% sum = sum + (parseInt(arr[1]) * parseInt(arr[2])) %>
+                                    </td>
+                                    <%      }else{ %>
+                                    <td><%= arr[i] %></td>
+                                    <%      } %>
+                                    <%  } %>
+                                    <% j++ %>
+                                </tr>
+                                <% }) %>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-5">
+
+                        </div>
+
+                        <div class="col-lg-4 col-sm-5 ml-auto">
+                            <table class="table table-clear">
+                                <tbody>
+                                    <tr>
+                                        <td class="left">
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                        <td class="right">$ <%= sum.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
+                                        </td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td class="left">
+                                            <strong>Discount (20%)</strong>
+                                        </td>
+                                        <td class="right">$1,699,40</td>
+                                    </tr> -->
+                                    <tr>
+                                        <td class="left">
+                                            <strong>Iva (19%)</strong>
+                                        </td>
+                                        <td class="right">$
+                                            <%= (sum * 0.19).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left">
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="right">
+                                            <strong>$
+                                                <%= (sum * 1.19).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="card-footer text-muted">
+                    <ul>
+                        <li>A partir de la entrega de Almacen Bombas SA dispondra de 15 dias habiles para la revision y
+                            entrega de la cotizacion de reparacion</li>
+                        <li>A partir de la fecha en la que se entrega la cotizacion el cliente dispondra de 15 dias
+                            habiles para aprobar la cotizacion o retirar
+                            el equipo de no hacerlo Almacen Bombas nose hace responsable por la perdida</li>
+                        <li>Todas las piezas son originales y traidas de fabrrica</li>
 
-        <div class="col-md-6">
-            <div class="row p-5">
-                <div class="text-light mt-5 mb-5 text-center small">
-                    <a class="btn" href="/reparaciones/<%= reparacion.id %>/editar">Editar</a>
-                </div>
-                <div class="text-light mt-5 mb-5 text-center small">
-                    <a class="btn" href="/reparaciones">Regresar</a>
-                </div>
-
-                <div class="text-light mt-5 mb-5 text-center small">
-                    <a class="btn" href="/reparaciones">Aprobada</a>
-                </div>
-
-                <div class="text-light mt-5 mb-5 text-center small">
-                    <a class="btn" href="/reparaciones">Listo</a>
+                    </ul>
                 </div>
             </div>
-            
         </div>
-        
-        
+        <div class="col">
 
-        
-       
-        
+        </div>
     </div>
 
-   
-
-
+</div>
 
 
 <% include partials/footer %>
