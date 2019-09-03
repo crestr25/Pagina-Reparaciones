@@ -1,30 +1,51 @@
 <% include partials/header %>
 
-<div style="width: 60%; margin: 0 auto;">
-    <h1 align="center">Reparaciones Pendientes</h1>
-    <table class="table">
-        <thead class="thead-dark">
-        <tr align="center">
-            <th scope="col">Orden</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Empresa</th>
-            <th scope="col">Bomba</th>
-            <th scope="col">Estado</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% reparaciones.forEach(function(element){ %>
-            <tr >
-                <td><a href="/reparaciones/<%= element.id %>"><%= element.number %></a></th>
-                <td><%= element.fecha %></td>
-                <td><%= element.empresa %></td>
-                <td><%= element.marca + " " + element.referencia %></td>
-                <td><%= element.estado %></td>
-            </tr>
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-auto"> 
+            <h1>Reparaciones Pendientes</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="btn-group-vertical" role="group">
+                <a href="/nueva">
+                    <button type="button" class="btn btn-secondary"><i class="fas fa-plus"></i></button>
+                </a>
+                <a href="/reparaciones/historial">
+                    <button type="button" class="btn btn-secondary"><i class="fas fa-archive"></i></button>
+                </a>
+            </div>
+        </div>
+        <div class="col-10">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr align="center">
+                        <th scope="col">Orden</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Empresa</th>
+                        <th scope="col">Bomba</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% reparaciones.forEach(function(element){ %>
+                        <tr align="center">
+                            <td><a href="/reparaciones/<%= element.id %>"><%= element.number %></a></th>
+                            <td><%= element.fecha %></td>
+                            <td><%= element.empresa %></td>
+                            <td><%= element.marca + " " + element.referencia %></td>
+                            <td><%= element.estado %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
 
-        <% }) %>
-        </tbody>
-    </table>
-    <a href="/reparaciones/historial">Archivados</a>
+        </div>
+    </div>
+    
+    
 </div>
 <% include partials/footer %>

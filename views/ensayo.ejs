@@ -2,23 +2,21 @@
 
 <div class="container">
         <div class="row"  id="print">
-            <div class="col-1" align="center">
+            <div class="col-1" align="center" >
                 <div class="btn-group-vertical">
                     
-                    <a class="btn btn-dark" href="/reparaciones/<%= JSON.parse(reparacion)._id %>/editar">E</a>
-                   
-                    <a class="btn btn-dark" href="/reparaciones">R</a>
+                    <a id = "archivo1" class="btn btn-dark" href="/reparaciones/<%= JSON.parse(reparacion)._id %>/editar"><i class="far fa-edit"></i></a>
                     
-                    <form action="/reparaciones/<%= JSON.parse(reparacion)._id %>/historial" method="POST">
-                        <button class="btn btn-lg btn-default btn-block btn-dark">S</button>
+                    <form id = "archivo2" action="/reparaciones/<%= JSON.parse(reparacion)._id %>/historial" method="POST">
+                        <button class="btn btn-lg btn-default btn-block btn-dark"><i class="far fa-save"></i></button>
                     </form>
 
-                    <form action="/reparaciones/<%= JSON.parse(reparacion)._id %>/terminar" method="POST">
-                        <button class="btn btn-lg btn-default btn-block btn-dark"><a href="javascript:print()">P</a></button>
+                    <form id = "archivo3" action="/reparaciones/<%= JSON.parse(reparacion)._id %>/terminar" method="POST">
+                        <button class="btn btn-lg btn-default btn-block btn-dark" onclick="print()"><i class="far fa-file-pdf"></i></button>
                     </form>
-    
-                    
-                   
+
+                    <a class="btn btn-dark" href="/reparaciones"><i class="fas fa-undo-alt"></i></a>
+                       
                 </div>
                         
             </div>
@@ -26,7 +24,7 @@
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="row p-5">
-                                <!-- <img class="img-fluid" alt="Responsive image" src="https://images.pexels.com/photos/67843/splashing-splash-aqua-water-67843.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"> -->
+            
                             <div class="col-md-9">
                                 
                                 <h1>ALMACEN BOMBAS S.A</h1>
@@ -161,14 +159,24 @@
         }
         var on1 = document.getElementById('on1');
         var on2 = document.getElementById('on2');
-        var test = JSON.parse('<%- reparacion %>').item
+        var arc1 = document.getElementById('archivo1')
+        var arc2 = document.getElementById('archivo2')
+        var arc3 = document.getElementById('archivo3')
+        var test = JSON.parse('<%- reparacion %>')
         document.addEventListener('DOMContentLoaded', function() {
-            if(test[0][0] === ""){
+            if(test.item[0][0] === ""){
                 console.log("vacio")
             }else{
                 console.log("lleno")
                 on1.style.display = "block";
                 on2.style.display = "block";
+            }
+            console.log(test.estado)
+            console.log(arc2)
+            if(test.estado === "Archivado"){
+                arc1.style.display = "none"
+                arc2.style.display = "none"
+                arc3.style.display = "none"
             }
         })
 
