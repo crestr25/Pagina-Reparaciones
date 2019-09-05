@@ -4,23 +4,30 @@
         <div class="col">
             <div class="btn-group-vertical">
 
-                <a id="archivo1" class="btn btn-dark" href="/reparaciones/<%= JSON.parse(reparacion)._id %>/editar"><i
-                        class="far fa-edit"></i></a>
+                <a href="/reparaciones/<%= JSON.parse(reparacion)._id %>/editar" id="icono" class="archivo1">
+                    <button type="button" class="btn btn-secondary"><i class="far fa-edit"></i></button>
+                </a>
 
-                <form id="archivo2" action="/reparaciones/<%= JSON.parse(reparacion)._id %>/historial" method="POST">
-                    <button class="btn btn-dark"><i class="far fa-save"></i></button>
-                </form>
+                <a id="icono" class="archivo1">
+                    <form action="/reparaciones/<%= JSON.parse(reparacion)._id %>/historial" method="POST">
+                        <button type="button" class="btn btn-secondary"><i class="far fa-save"></i></button>
+                    </form>
+                </a>
 
-                <form id="archivo3" action="/reparaciones/<%= JSON.parse(reparacion)._id %>/terminar" method="POST">
-                    <button class="btn btn-dark" onclick="print()"><i class="far fa-file-pdf"></i></button>
-                </form>
+                <a id="icono" class="archivo1">
+                    <button type="button" class="btn btn-secondary" id="create_pdf"><i
+                            class="far fa-file-pdf"></i></button>
+                </a>
 
-                <a class="btn btn-dark" href="/reparaciones"><i class="fas fa-undo-alt"></i></a>
+
+                <a href="/reparaciones" id="icono">
+                    <button type="button" class="btn btn-secondary"><i class="fas fa-undo-alt"></i></button>
+                </a>
 
             </div>
         </div>
         <div class="col-10">
-            <div class="card">
+            <div class="card" id="form">
                 <div class="card-header">
                     <h3>ALMACEN BOMBAS S.A</h3>
                     Reparacion
@@ -69,7 +76,7 @@
 
                     </div>
 
-                    <div class="table-responsive-sm">
+                    <div class="table-responsive-sm" id="on1" style="display: none">
                         <table class="table table-striped">
                             <thead>
                                 <tr align="center">
@@ -107,7 +114,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
+                    <div class="row" id="on2" style="display: none">
                         <div class="col-lg-4 col-sm-5">
 
                         </div>
@@ -171,5 +178,63 @@
 
 </div>
 
+<script>
+    var on1 = document.getElementById('on1');
+    var on2 = document.getElementById('on2');
+    var arc = document.getElementsByClassName('archivo1')
+    var test = JSON.parse('<%- reparacion %>')
+    document.addEventListener('DOMContentLoaded', function () {
+       
+        if (typeof test.item[0] === 'undefined' || test.item[0][0] === "") {
+            console.log("vacio")
+        } else {
+            console.log("lleno")
+            on1.style.display = "block";
+            on2.style.display = "block";
+        }
+        if (test.estado === "Archivado") {
+            arc[0].style.display = "none";
+            arc[1].style.display = "none";
+            arc[2].style.display = "none";
+        }
+        (function () {
+            var
+                form = $('#form'),
+                cache_width = form.width(),
+                a4 = [595.28, 841.89]; // for a4 size paper width and height  
+
+            $('#create_pdf').on('click', function () {
+                $('body').scrollTop(0);
+                createPDF();
+            });
+            //create pdf  
+            function createPDF() {
+                getCanvas().then(function (canvas) {
+                    var
+                        img = canvas.toDataURL("image/png"),
+                        doc = new jsPDF({
+                            unit: 'px',
+                            format: 'a4'
+                        });
+                    doc.addImage(img, 'JPEG', 20, 20);
+                    doc.save('Bhavdip-html-to-pdf.pdf');
+                    form.width(cache_width);
+                });
+            }
+
+            // create canvas object  
+            function getCanvas() {
+                form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+                return html2canvas(form, {
+                    imageTimeout: 2000,
+                    removeContainer: true
+                });
+            }
+
+        }());
+    })
+
+
+</script>
 
 <% include partials/footer %>

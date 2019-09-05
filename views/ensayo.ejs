@@ -1,193 +1,151 @@
 <% include partials/header %>
 
-<div class="container">
-        <div class="row"  id="print">
-            <div class="col-1" align="center" >
-                <div class="btn-group-vertical">
-                    
-                    <a id = "archivo1" class="btn btn-dark" href="/reparaciones/<%= JSON.parse(reparacion)._id %>/editar"><i class="far fa-edit"></i></a>
-                    
-                    <form id = "archivo2" action="/reparaciones/<%= JSON.parse(reparacion)._id %>/historial" method="POST">
-                        <button class="btn btn-lg btn-default btn-block btn-dark"><i class="far fa-save"></i></button>
-                    </form>
+<input type="button" id="create_pdf" value="Generate PDF">
+   <form class="form" style="max-width: none; width: 1005px;">
+    <h3>DEMO</h3>
+    <p style="font-size: large">
+        Convert HTML TO PDF:
+    </p>
+    <table class="table table-border">
+        <tbody>
+            <tr>
+                <th>S.N.</th>
+                <th>Employee Name</th>
+                <th>Address</th>
+                <th>Company</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Mike</td>
+                <td>USA</td>
+                <td>Microsoft</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Manoj Ranjit</td>
+                <td>India</td>
+                <td>Tata Motors</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>xìng</td>
+                <td>China</td>
+                <td>Alibaba</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Akari</td>
+                <td>Japan</td>
+                <td>Mitsubishi </td>
+            </tr>
+			<tr>
+                <td>5</td>
+                <td>Binod</td>
+                <td>Nepal</td>
+                <td>CG </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
 
-                    <form id = "archivo3" action="/reparaciones/<%= JSON.parse(reparacion)._id %>/terminar" method="POST">
-                        <button class="btn btn-lg btn-default btn-block btn-dark" onclick="print()"><i class="far fa-file-pdf"></i></button>
-                    </form>
+<script>
+    (function () {
+        var
+         form = $('.form'),
+         cache_width = form.width(),
+         a4 = [595.28, 841.89]; // for a4 size paper width and height
 
-                    <a class="btn btn-dark" href="/reparaciones"><i class="fas fa-undo-alt"></i></a>
-                       
-                </div>
-                        
-            </div>
-            <div class="col-11">
-                <div class="card">
-                    <div class="card-body p-0">
-                        <div class="row p-5">
-            
-                            <div class="col-md-9">
-                                
-                                <h1>ALMACEN BOMBAS S.A</h1>
-                            </div>
-    
-                            <div class="col-md-3 text-right" >
-                                <p class="font-weight-bold mb-1">Reparacion #<%= JSON.parse(reparacion).number %></p>
-                                <p class="text-muted">Fecha: <%= JSON.parse(reparacion).fecha %></p>
-                            </div>
-                        </div>
-    
-                        <hr class="my-5">
-    
-                        <div class="row pb-5 p-5" >
-                            <div class="col-md-6">
-                                <p class="font-weight-bold mb-4">Informacion del Cliente</p>
-                                <p class="mb-1"><span class="text-muted">Empresa: </span><%= JSON.parse(reparacion).empresa %></p>
-                                <p class="mb-1"><span class="text-muted">Correo: </span><%= JSON.parse(reparacion).correo %></p>
-                                <p class="mb-1"><span class="text-muted">Telefono: </span><%= JSON.parse(reparacion).telefono %></p>
-                            </div>
-    
-                            <div class="col-md-6">
-                                <p class="font-weight-bold mb-4">Datos del Equipo</p>
-                                <p class="mb-1"><span class="text-muted">Marca: </span> <%= JSON.parse(reparacion).marca %></p>
-                                <p class="mb-1"><span class="text-muted">Referencia: </span> <%= JSON.parse(reparacion).referencia %></p>
-                                <p class="mb-1"><span class="text-muted">Descripcion: </span> <%= JSON.parse(reparacion).descripcion %></p>
-                            </div>
-                        </div>
-    
-                        <div style="display: none" class="row p-5" id = "on1">
-                            <div class="col-md-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr align="center">
-                                            <th class="border-0 text-uppercase small font-weight-bold">Nombre</th>
-                                            <th class="border-0 text-uppercase small font-weight-bold">Cantidad</th>
-                                            <th class="border-0 text-uppercase small font-weight-bold">Precio</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% JSON.parse(reparacion).item.forEach(function(arr){ %>
-                                        <tr align="center">
-                                            <% for(var i = 0, num = 0; i < arr.length; i++){%>
-
-                                            <%  if(i === 2){ %>
-                                                    <td><%= parseInt(arr[i]).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
-                                        <%      }else{ %>
-                                                    <td><%= arr[i] %></td>
-                                        <%      } %>
-                                        <%  } %>  
-                                        </tr>
-                                        <% }) %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        
-    
-                        <div class="d-flex bg-secondary text-white p-4">   
-                            <div class="column">
-                                <ul>
-                                    <li>A partir de la entrega de Almacen Bombas SA dispondra de 15 dias habiles para la revision y entrega de la cotizacion de reparacion</li>
-                                    <li>A partir de la fecha en la que se entrega la cotizacion el cliente dispondra de 15 dias habiles para aprobar la cotizacion o retirar
-                                         el equipo de no hacerlo Almacen Bombas nose hace responsable por la perdida</li>
-                                    <li>Todas las piezas son originales y traidas de fabrrica</li>
-                                    
-                                </ul>
-                            </div>
-                            <div style="display: none" class="row  float-right" id="on2">
-                                    <div class="py-3 px-5 text-left">
-                                        <div class="mb-2">Total</div>
-                                        <div class="h2 font-weight-light  float-right"><% for(var i = 0, tot = 0, n = 0; i < JSON.parse(reparacion).item.length; i++){ %>
-                                            <%    n = parseInt(JSON.parse(reparacion).item[i][2]) %> 
-                                            <%    tot = tot + n %>
-                                            <% } %>
-                                            <%= tot.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,') %>
-                                        </div>
-                                    </div>
-                                </div> 
-                        </div>
-                                
-                    </div>
-                            
-                </div>
-            </div>
-        </div>            
-
-        
-        
-    </div>
-</div>
-
-    <script>
-
-        function print(){
-            html2canvas(document.getElementById("print"), {
-  onrendered:function(canvas) {
-      var contentWidth = canvas.width;
-      var contentHeight = canvas.height;
-      //One page pdf shows the canvas height generated by html pages.
-      var pageHeight = contentWidth / 592.28 * 841.89;
-      //html page height without pdf generation
-      var leftHeight = contentHeight;
-      //Page offset
-      var position = 0;
-      //a4 paper size [595.28, 841.89], html page generated canvas in pdf picture width
-      var imgWidth = 595.28;
-      var imgHeight = 592.28/contentWidth * contentHeight;
-      var pageData = canvas.toDataURL('image/jpeg', 1.0);
-      var pdf = new jsPDF('', 'pt', 'letter');
-      //There are two heights to distinguish, one is the actual height of the html page, and the page height of the generated pdf (841.89)
-      //When the content does not exceed the range of pdf page display, there is no need to paginate
-      if (leftHeight < pageHeight) {
-      pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight );
-      } else {
-          while(leftHeight > 0) {
-              pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
-              leftHeight -= pageHeight;
-              position -= 841.89;
-              //Avoid adding blank pages
-              if(leftHeight > 0) {
-                pdf.addPage();
-              }
-          }
-      }
-      pdf.save('content.pdf');
-  }
-})
-       
-
+        $('#create_pdf').on('click', function () {
+            $('body').scrollTop(0);
+            createPDF();
+        });
+        //create pdf
+        function createPDF() {
+            getCanvas().then(function (canvas) {
+                var
+                 img = canvas.toDataURL("image/png"),
+                 doc = new jsPDF({
+                     unit: 'px',
+                     format: 'a4'
+                 });
+                doc.addImage(img, 'JPEG', 20, 20);
+                doc.save('bhavdip-html-to-pdf.pdf');
+                form.width(cache_width);
+            });
         }
-        var on1 = document.getElementById('on1');
-        var on2 = document.getElementById('on2');
-        var arc1 = document.getElementById('archivo1')
-        var arc2 = document.getElementById('archivo2')
-        var arc3 = document.getElementById('archivo3')
-        var test = JSON.parse('<%- reparacion %>')
-        document.addEventListener('DOMContentLoaded', function() {
-            if(test.item[0][0] === ""){
-                console.log("vacio")
-            }else{
-                console.log("lleno")
-                on1.style.display = "block";
-                on2.style.display = "block";
+
+        // create canvas object
+        function getCanvas() {
+            form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+            return html2canvas(form, {
+                imageTimeout: 2000,
+                removeContainer: true
+            });
+        }
+
+    }());
+</script>
+<script>
+    (function ($) {
+        $.fn.html2canvas = function (options) {
+            var date = new Date(),
+            $message = null,
+            timeoutTimer = false,
+            timer = date.getTime();
+            html2canvas.logging = options && options.logging;
+            html2canvas.Preload(this[0], $.extend({
+                complete: function (images) {
+                    var queue = html2canvas.Parse(this[0], images, options),
+                    $canvas = $(html2canvas.Renderer(queue, options)),
+                    finishTime = new Date();
+
+                    $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
+                    $canvas.siblings().toggle();
+
+                    $(window).click(function () {
+                        if (!$canvas.is(':visible')) {
+                            $canvas.toggle().siblings().toggle();
+                            throwMessage("Canvas Render visible");
+                        } else {
+                            $canvas.siblings().toggle();
+                            $canvas.toggle();
+                            throwMessage("Canvas Render hidden");
+                        }
+                    });
+                    throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
+                }
+            }, options));
+
+            function throwMessage(msg, duration) {
+                window.clearTimeout(timeoutTimer);
+                timeoutTimer = window.setTimeout(function () {
+                    $message.fadeOut(function () {
+                        $message.remove();
+                    });
+                }, duration || 2000);
+                if ($message)
+                    $message.remove();
+                $message = $('<div ></div>').html(msg).css({
+                    margin: 0,
+                    padding: 10,
+                    background: "#000",
+                    opacity: 0.7,
+                    position: "fixed",
+                    top: 10,
+                    right: 10,
+                    fontFamily: 'Tahoma',
+                    color: '#fff',
+                    fontSize: 12,
+                    borderRadius: 12,
+                    width: 'auto',
+                    height: 'auto',
+                    textAlign: 'center',
+                    textDecoration: 'none'
+                }).hide().fadeIn().appendTo('body');
             }
-            console.log(test.estado)
-            console.log(arc2)
-            if(test.estado === "Archivado"){
-                arc1.style.display = "none"
-                arc2.style.display = "none"
-                arc3.style.display = "none"
-            }
-        })
-
-    
-    
-    
-    </script>
-
-   
-
-
+        };
+    })(jQuery);
+</script>
 
 
 <% include partials/footer %>
