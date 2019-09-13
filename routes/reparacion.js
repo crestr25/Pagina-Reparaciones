@@ -2,9 +2,17 @@ var express    = require("express");
 var router     = express.Router();
 var Counter    = require("../models/counter");
 var Reparacion = require("../models/reparacion");
+var email      = require('emailjs');
+var middleware = require("../middleware")
+var server = email.server.connect({
+    user: 'ingenieria.medellin@almacenbombas.com',
+    password: 'ing+Medellin.01',
+    host: 'mail.almacenbombas.com',
+    ssl: true
+  });
 
 
-router.get("/nueva", isLoggedIn,function(req, res){
+router.get("/nueva", middleware.isLoggedIn,function(req, res){
     res.render("reparaciones/nueva");
 });
 
@@ -103,6 +111,17 @@ router.put("/:id", function(req, res){
 
 router.post("/:id/historial", function(req, res){
     console.log(req.params.id)
+    
+      
+      server.send({
+        text: 'Hey howdy',
+        from: 'NodeJS',
+        to: '<crestr25@gmail.com>',
+        cc: '',
+        subject: 'Greetings'
+      }, function (err, message) {
+        console.log(err || message);
+      });
     Reparacion.findByIdAndUpdate(req.params.id, {estado : "Esperando Aprobacion"} , function(err,rep){
         if(err){
             console.log(err)
@@ -121,6 +140,13 @@ router.post("/:id/terminar", function(req, res){
     })
 })
 
+router.delete("/:id", function(req, res){
+    Reparacion.findByIdAndRemove(req.params.id, function(err){
+        if(err) console.log(err)
+        res.redirect("/reparaciones")
+    })
+})
+
 function Serial(num, len){
     var r = "" + num;
     while(r.length < len){
@@ -130,11 +156,6 @@ function Serial(num, len){
   
 }
 
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next()
-    }
-    res.redirect("/login")
-}
+
 
 module.exports = router;

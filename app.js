@@ -12,6 +12,7 @@ var User             = require("./models/user")
 
 var reparacionRoutes = require("./routes/reparacion")
 var indexRoutes      = require("./routes/index")
+var listaRoutes      = require("./routes/lista")
 
 mongoose.set('useNewUrlParser', true);
 mongoose.connect("mongodb://localhost:27017/reparaciones",{ useFindAndModify: false })
@@ -43,6 +44,7 @@ app.use(function(req, res, next){
 
 app.use(indexRoutes);
 app.use("/reparaciones", reparacionRoutes);
+app.use("/lista", listaRoutes);
 
 // var c = new Counter({})
 // c.save()

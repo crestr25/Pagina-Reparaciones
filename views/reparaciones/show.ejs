@@ -10,15 +10,20 @@
 
                 <a id="icono" class="archivo1">
                     <form action="/reparaciones/<%= JSON.parse(reparacion)._id %>/historial" method="POST">
-                        <button type="button" class="btn btn-secondary"><i class="far fa-save"></i></button>
+                        <button type="submit" class="btn btn-secondary"><i class="far fa-save"></i></button>
                     </form>
                 </a>
+                
 
                 <a id="icono" class="archivo1">
-                    <button type="button" class="btn btn-secondary" id="create_pdf"><i
-                            class="far fa-file-pdf"></i></button>
+                    <button type="button" class="btn btn-secondary" id="create_pdf"><i class="far fa-file-pdf"></i></button>
                 </a>
 
+               
+                    <form action="/reparaciones/<%= JSON.parse(reparacion)._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-secondary"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                
 
                 <a href="/reparaciones" id="icono">
                     <button type="button" class="btn btn-secondary"><i class="fas fa-undo-alt"></i></button>
