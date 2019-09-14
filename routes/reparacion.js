@@ -24,14 +24,12 @@ router.post("/nueva", function(req, res){
         var serial = Serial(c[0].counter, 4)
 
         var r1 = new Reparacion({
-            number: serial,
+            serie: serial,
             fecha: req.body.fecha,
             empresa: req.body.empresa,
-            correo: req.body.email,
-            telefono: req.body.telefono.toString(),
             marca: req.body.marca,
+            referencia: req.body.referencia,
             descripcion: req.body.descripcion,
-            referencia: req.body.referencia
         })
 
         r1.save(function(err){

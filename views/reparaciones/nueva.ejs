@@ -1,53 +1,51 @@
 <% include ../partials/header %>
 
 <div class="container">
-    <div class="row">   
-        <div style="width: 50%; margin: 0 auto;">
-            <h1 style="text-align: center;margin: 10px;">Crear Reparacion</h1>
-            
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center">Crear Reparacion</h4>
+            <p class="text-center">Ingrese informacion</p>
             <form action="/reparaciones/nueva" method="POST">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>Fecha</label>
-                        <input type="date" class="form-control" name="fecha" placeholder="Fecha">
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
                     </div>
-                    <div class="form-group col-md-6">
-                      <label>Empresa</label>
-                      <input type="text" class="form-control" name="empresa" placeholder="Empresa">
+                    <input name="fecha" class="form-control" placeholder="Full name" type="date">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fab fa-black-tie"></i> </span>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>Correo</label>
-                        <input type="email" class="form-control" name="email" placeholder="Email">
+                    <input name="empresa" class="form-control" placeholder="Empresa" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label>Telefono</label>
-                        <input type="number" class="form-control" name="telefono" placeholder="Telefono">
+                    <input name="marca" class="form-control" placeholder="Marca del Equipo" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>Marca</label>
-                        <input type="text" class="form-control" name="marca" placeholder="marca">
+                    <input name="referencia" class="form-control" placeholder="Referencia del Equipo" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fas fa-clipboard-list"></i> </span>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label>Referencia</label>
-                        <input type="text" class="form-control" name="referencia" placeholder="referencia">
-                    </div>
-                </div>
+                    <textarea name="descripcion" class="form-control" placeholder="Descripcion del Problema"></textarea>
+                </div> <!-- form-group// -->
+                
                 <div class="form-group">
-                    <label>Descripcion</label>
-                    <textarea class="form-control" name="descripcion" placeholder="Descripcion del problema"></textarea>
-                </div>              
-                <div class="form-group">
-                    <button class="btn btn-lg btn-default btn-block btn-dark">Enviar</button>
-                </div>
+                    <button type="submit" class="btn btn-primary btn-block"> Guardar </button>
+                </div> <!-- form-group// -->
+                <p class="text-center">Nueva empresa <a href="/register">Registrar</a> </p>
             </form>
-            <a href="/">Volver</a>
-        </div>
-    </div>            
+        </article>
+    </div> <!-- card.// -->
 </div>
+
 
 
 

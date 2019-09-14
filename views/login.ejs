@@ -1,9 +1,30 @@
 <% include partials/header %>
 
-<form action="/login" method="POST">
-    <input type="text" name="username" placeholder="User">
-    <input type="password" name="password" placeholder="Password">
-    <input type="submit" value="LogIn">
-</form>
+<div class="container">
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center">Registrar </h4>
+            <!-- <p class="text-center"></p> -->
+            <form action="/login" method="POST">
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                    </div>
+                    <input name="username" class="form-control" placeholder="Usuario" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fas fa-key"></i> </span>
+                    </div>
+                    <input name="password" class="form-control" placeholder="Password" type="password">
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Ingresar </button>
+                </div> <!-- form-group// -->
+                
+            </form>
+        </article>
+    </div> <!-- card.// -->
+</div>
 
 <% include partials/footer %>
